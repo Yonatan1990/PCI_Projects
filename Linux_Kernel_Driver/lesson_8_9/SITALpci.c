@@ -8,6 +8,8 @@
 
 #define REG_OFF 0x800
 
+#define MMAP_SIZE 4096
+
 int main(int argc,char *argv[]) {
 
 uint16_t i;
@@ -23,17 +25,17 @@ if (fd < 0){
 	return -1;
 }
 
-bar0 = mmap(NULL,256,PROT_READ | PROT_WRITE, MAP_SHARED,fd,0);
+bar0 = mmap(NULL,MMAP_SIZE,PROT_READ | PROT_WRITE, MAP_SHARED,fd,0);
 close (fd);
 
-//lets check of we have a valid pointers
+//let's check of we have a valid pointers
 if(bar0 == MAP_FAILED){
 	perror ("memory mapping of bar failed");
 	return -1;
 }
 
 	
-//lets tahe cars of the offset
+//let's take care of the offset
 fd = open("/sys/bus/pci/devices/0000:02:0a.0/config",O_RDONLY);
 if (fd < 0){
 	perror("error opening BAR's resource file");
@@ -71,7 +73,7 @@ printf("\n%s\n",signature);
 printf("\nSital Registers\n");
 for (i=0;i<32;i++){
 
-	printf("Register %x on BAR0: %x \n",i,*(uint16_t*)(bar0 + 0x800 + i*2));
+	printf("Register %x on BAR0: %x \n",i,*(uint16_t*)(bar0 + REG_OFF + i*2));
 
 }
 
@@ -82,7 +84,7 @@ if (fd < 0){
 	return -1;
 }
 
-bar1 = mmap(NULL,256,PROT_READ | PROT_WRITE, MAP_SHARED,fd,0);
+bar1 = mmap(NULL,MMAP_SIZE,PROT_READ | PROT_WRITE, MAP_SHARED,fd,0);
 close (fd);
 
 //lets check of we have a valid pointers
@@ -111,8 +113,8 @@ value = *(bar0 + 0xa);
 
 */
 
-munmap(bar0,256);
-munmap(bar1,256);
+munmap(bar0,MMAP_SIZE);
+munmap(bar1,MMAP_SIZE);
 return 0 ;
 }
 

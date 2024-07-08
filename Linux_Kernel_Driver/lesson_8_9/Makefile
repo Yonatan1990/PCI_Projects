@@ -10,4 +10,4 @@ SITALpci.o: SITALpci.c
 	$(CC) $(CFLAGS) $(CXXFLAGS)  -c SITALpci.c
 
 clean:
-	rm main.o rm main
+	rm SITALpci.o main
