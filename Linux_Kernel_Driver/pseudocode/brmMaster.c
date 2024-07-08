@@ -35,7 +35,7 @@ int initialize_pci(){
 		return -1;
 	}
 
-	bar0 = mmap(NULL,BUFFER,PROT_READ | PROT_WRITE, MAP_SHARED,fd,0);
+	bar0 = mmap(NULL,MMAP_SIZE,PROT_READ | PROT_WRITE, MAP_SHARED,fd,0);
 	close (fd);
 
 	//lets check of we have a valid pointers
@@ -69,13 +69,13 @@ int initialize_pci(){
 
 	*(uint16_t*)(bar0 + 0x56) = 0xb000;
 
-	char signature[40];
+	char signature[64];
 
-	for (i=0;i<0x64;i++){
+	for (i=0;i<64;i++){
 
-	printf("Byte %x on BAR0: %x \n",i,*(bar0 + i));
-	if (*(bar0 + i) != 0)
-		signature[i] = *(bar0 + i);
+		printf("Byte %x on BAR0: %x \n",i,*(bar0 + i));
+		if (*(bar0 + i) != 0)
+			signature[i] = *(bar0 + i);
 	}
 
 	printf("\n%s\n",signature);
@@ -92,7 +92,7 @@ int initialize_pci(){
 		return -1;
 	}
 
-	bar1 = mmap(NULL,BUFFER,PROT_READ | PROT_WRITE, MAP_SHARED,fd,0);
+	bar1 = mmap(NULL,MMAP_SIZE,PROT_READ | PROT_WRITE, MAP_SHARED,fd,0);
 	close (fd);
 
 	//lets check of we have a valid pointers
@@ -113,7 +113,8 @@ int initialize_pci(){
 }
 
 
-
+//	munmap(bar0,BUFFER);
+//	munmap(bar1,BUFFER);
 //munmap(bar0,256);
 //munmap(bar1,256);
 return 0 ;

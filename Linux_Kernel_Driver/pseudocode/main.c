@@ -60,8 +60,8 @@ int main()
 
 	//int i;
 	//i++;
-	munmap(bar0,BUFFER);
-	munmap(bar1,BUFFER);
+	munmap(bar0,MMAP_SIZE);
+	munmap(bar1,MMAP_SIZE);
 
 	return 0;
 }
